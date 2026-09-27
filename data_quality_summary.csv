@@ -1,0 +1,13 @@
+field,issue_found,treatment_rule_for_etl
+ticket_id,None found - checked for duplicates,Keep as primary key; re-run uniqueness check on every new extract
+opened_at,None found - checked range & future dates,Keep as-is; anchor for all time-based metrics
+channel,None found once normalized - checked against 4 valid values,Lower-case & trim; validate against allowed set on every run
+queue,None found once normalized - checked against 5 valid values,Lower-case & trim; validate against allowed set on every run
+priority,None found once normalized - checked against 4 valid values,Lower-case & trim; validate against allowed set on every run
+subject,Free text; not formally validated,"Trim only; use for frequency ranking (FR-03), do not aggregate numerically"
+first_response_min,149 missing (3.7%) - no reply yet; 334 outliers beyond IQR upper fence (387 min),Keep nulls as NULL (never impute 0); derive frt_sla_flag using the IQR upper fence
+resolved_at,225 missing (5.6%) - open tickets,Keep as open backlog; derive is_open flag; never drop
+reopened,None found - clean boolean,Cast to boolean; use for reopen-rate calculation (FR-07)
+csat,"2,774 missing (69.3%) - optional survey, coverage even across segments","Derive has_csat flag; report average CSAT only on that subset, always disclose coverage % (FR-08)"
+resolution_min,Derived from resolved_at - opened_at; NaN for open tickets; 375 outliers beyond IQR upper fence (8498 min),Derive in pipeline; derive resolution_sla_flag using the IQR upper fence; report median alongside mean (FR-05)
+opened_month,N/A - not in raw file,"Derive in pipeline as opened_at truncated to month, for trend reporting (FR-01)"
