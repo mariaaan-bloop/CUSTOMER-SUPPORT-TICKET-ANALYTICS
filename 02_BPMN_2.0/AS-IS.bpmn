@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_CustomerSupport" targetNamespace="http://example.com/customer-support" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.30.1">
+  <bpmn:process id="Process_CustomerSupport" name="AS-IS Customer Support Ticket Handling" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_CustomerSupport">
+      <bpmn:lane id="Lane_Agent" name="SUPPORT AGENT">
+        <bpmn:flowNodeRef>Task_FirstResponse</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_WorkTicket</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ResolveClose</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Resolved</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Reopened</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_System" name="SUPPORT SYSTEM">
+        <bpmn:flowNodeRef>Task_TicketLogged</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_TicketQueue</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_TicketWaits</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CSAT</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_CSAT</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Customer" name="CUSTOMER">
+        <bpmn:flowNodeRef>Start_TicketSubmitted</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_TicketClosed</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_TicketSubmitted" name="Ticket Submitted" />
+    <bpmn:endEvent id="End_TicketClosed" name="Ticket Closed" />
+    <bpmn:task id="Task_TicketLogged" name="Ticket Logged in System" />
+    <bpmn:task id="Task_TicketQueue" name="Ticket Enters Queue" />
+    <bpmn:task id="Task_TicketWaits" name="Ticket Waits in Queue" />
+    <bpmn:task id="Task_FirstResponse" name="Agent Provides First Response" />
+    <bpmn:task id="Task_WorkTicket" name="Agent Works on Ticket" />
+    <bpmn:exclusiveGateway id="Gateway_Resolved" name="Resolved?" gatewayDirection="Diverging" />
+    <bpmn:task id="Task_ResolveClose" name="Resolve &#38; Close Ticket" />
+    <bpmn:exclusiveGateway id="Gateway_Reopened" name="Reopened?" gatewayDirection="Diverging" />
+    <bpmn:exclusiveGateway id="Gateway_CSAT" name="CSAT Survey?" gatewayDirection="Diverging" />
+    <bpmn:task id="Task_CSAT" name="Send CSAT Survey" />
+    <bpmn:sequenceFlow id="Flow_Start_Log" sourceRef="Start_TicketSubmitted" targetRef="Task_TicketLogged" />
+    <bpmn:sequenceFlow id="Flow_Log_Queue" sourceRef="Task_TicketLogged" targetRef="Task_TicketQueue" />
+    <bpmn:sequenceFlow id="Flow_Queue_Wait" sourceRef="Task_TicketQueue" targetRef="Task_TicketWaits" />
+    <bpmn:sequenceFlow id="Flow_Wait_Response" sourceRef="Task_TicketWaits" targetRef="Task_FirstResponse" />
+    <bpmn:sequenceFlow id="Flow_Response_Work" sourceRef="Task_FirstResponse" targetRef="Task_WorkTicket" />
+    <bpmn:sequenceFlow id="Flow_Work_Resolved" sourceRef="Task_WorkTicket" targetRef="Gateway_Resolved" />
+    <bpmn:sequenceFlow id="Flow_Resolved_No" name="No" sourceRef="Gateway_Resolved" targetRef="Task_WorkTicket" />
+    <bpmn:sequenceFlow id="Flow_Resolved_Yes" name="Yes" sourceRef="Gateway_Resolved" targetRef="Task_ResolveClose" />
+    <bpmn:sequenceFlow id="Flow_Resolve_Reopened" sourceRef="Task_ResolveClose" targetRef="Gateway_Reopened" />
+    <bpmn:sequenceFlow id="Flow_Reopened_Yes" name="Yes" sourceRef="Gateway_Reopened" targetRef="Task_WorkTicket" />
+    <bpmn:sequenceFlow id="Flow_Reopened_No" name="No" sourceRef="Gateway_Reopened" targetRef="Gateway_CSAT" />
+    <bpmn:sequenceFlow id="Flow_CSAT_Yes" name="Yes" sourceRef="Gateway_CSAT" targetRef="Task_CSAT" />
+    <bpmn:sequenceFlow id="Flow_CSAT_No" name="No" sourceRef="Gateway_CSAT" targetRef="End_TicketClosed" />
+    <bpmn:sequenceFlow id="Flow_CSAT_End" sourceRef="Task_CSAT" targetRef="End_TicketClosed" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_CustomerSupport">
+    <bpmndi:BPMNPlane id="BPMNPlane_CustomerSupport" bpmnElement="Process_CustomerSupport">
+      <bpmndi:BPMNShape id="Lane_Customer_di" bpmnElement="Lane_Customer" isHorizontal="true">
+        <dc:Bounds x="160" y="50" width="1500" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_System_di" bpmnElement="Lane_System" isHorizontal="true">
+        <dc:Bounds x="160" y="200" width="1500" height="190" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Agent_di" bpmnElement="Lane_Agent" isHorizontal="true">
+        <dc:Bounds x="160" y="390" width="1500" height="300" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_TicketSubmitted_di" bpmnElement="Start_TicketSubmitted">
+        <dc:Bounds x="195" y="105" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="189" y="83" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_TicketClosed_di" bpmnElement="End_TicketClosed">
+        <dc:Bounds x="1560" y="105" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1536" y="83" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TicketLogged_di" bpmnElement="Task_TicketLogged">
+        <dc:Bounds x="280" y="260" width="150" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TicketQueue_di" bpmnElement="Task_TicketQueue">
+        <dc:Bounds x="470" y="260" width="150" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TicketWaits_di" bpmnElement="Task_TicketWaits">
+        <dc:Bounds x="660" y="260" width="150" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FirstResponse_di" bpmnElement="Task_FirstResponse">
+        <dc:Bounds x="775" y="430" width="170" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_WorkTicket_di" bpmnElement="Task_WorkTicket">
+        <dc:Bounds x="775" y="535" width="170" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Resolved_di" bpmnElement="Gateway_Resolved" isMarkerVisible="true">
+        <dc:Bounds x="1005" y="543" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1065" y="561" width="52" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ResolveClose_di" bpmnElement="Task_ResolveClose">
+        <dc:Bounds x="1060" y="430" width="170" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Reopened_di" bpmnElement="Gateway_Reopened" isMarkerVisible="true">
+        <dc:Bounds x="1235" y="543" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1232" y="593" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CSAT_di" bpmnElement="Gateway_CSAT" isMarkerVisible="true">
+        <dc:Bounds x="1320" y="260" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1309" y="310" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CSAT_di" bpmnElement="Task_CSAT">
+        <dc:Bounds x="1410" y="245" width="130" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Start_Log_di" bpmnElement="Flow_Start_Log">
+        <di:waypoint x="213" y="123" />
+        <di:waypoint x="250" y="123" />
+        <di:waypoint x="250" y="292" />
+        <di:waypoint x="280" y="292" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Log_Queue_di" bpmnElement="Flow_Log_Queue">
+        <di:waypoint x="430" y="292" />
+        <di:waypoint x="470" y="292" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Queue_Wait_di" bpmnElement="Flow_Queue_Wait">
+        <di:waypoint x="620" y="292" />
+        <di:waypoint x="660" y="292" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Wait_Response_di" bpmnElement="Flow_Wait_Response">
+        <di:waypoint x="735" y="325" />
+        <di:waypoint x="735" y="462" />
+        <di:waypoint x="775" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Response_Work_di" bpmnElement="Flow_Response_Work">
+        <di:waypoint x="860" y="495" />
+        <di:waypoint x="860" y="535" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Work_Resolved_di" bpmnElement="Flow_Work_Resolved">
+        <di:waypoint x="945" y="568" />
+        <di:waypoint x="1005" y="568" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Resolved_No_di" bpmnElement="Flow_Resolved_No">
+        <di:waypoint x="1030" y="593" />
+        <di:waypoint x="1030" y="650" />
+        <di:waypoint x="735" y="650" />
+        <di:waypoint x="735" y="567" />
+        <di:waypoint x="775" y="567" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="876" y="633" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Resolved_Yes_di" bpmnElement="Flow_Resolved_Yes">
+        <di:waypoint x="1030" y="543" />
+        <di:waypoint x="1030" y="515" />
+        <di:waypoint x="1145" y="515" />
+        <di:waypoint x="1145" y="495" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1040" y="517" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Resolve_Reopened_di" bpmnElement="Flow_Resolve_Reopened">
+        <di:waypoint x="1230" y="463" />
+        <di:waypoint x="1260" y="463" />
+        <di:waypoint x="1260" y="543" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Reopened_Yes_di" bpmnElement="Flow_Reopened_Yes">
+        <di:waypoint x="1235" y="568" />
+        <di:waypoint x="1170" y="568" />
+        <di:waypoint x="1170" y="625" />
+        <di:waypoint x="735" y="625" />
+        <di:waypoint x="735" y="567" />
+        <di:waypoint x="775" y="567" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="944" y="613" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Reopened_No_di" bpmnElement="Flow_Reopened_No">
+        <di:waypoint x="1260" y="543" />
+        <di:waypoint x="1260" y="285" />
+        <di:waypoint x="1320" y="285" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1268" y="404" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CSAT_Yes_di" bpmnElement="Flow_CSAT_Yes">
+        <di:waypoint x="1370" y="285" />
+        <di:waypoint x="1410" y="285" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1381" y="260" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CSAT_No_di" bpmnElement="Flow_CSAT_No">
+        <di:waypoint x="1345" y="260" />
+        <di:waypoint x="1345" y="160" />
+        <di:waypoint x="1578" y="160" />
+        <di:waypoint x="1578" y="141" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1454" y="135" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CSAT_End_di" bpmnElement="Flow_CSAT_End">
+        <di:waypoint x="1475" y="245" />
+        <di:waypoint x="1475" y="160" />
+        <di:waypoint x="1578" y="160" />
+        <di:waypoint x="1578" y="141" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
