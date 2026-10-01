@@ -2,7 +2,7 @@
 
 > *Turning historical customer support ticket data into decision-ready operational insights.*
 
-## 📋 Overview
+## Overview
 
 **Customer Support Ticket Analytics** is a Business Intelligence and Data Analytics project that analyzes historical customer support ticket data to understand support demand, operational performance, backlog, and customer satisfaction.
 
@@ -12,7 +12,7 @@ The project focuses on ticket volume, support queues, channels, priorities, firs
 
 ---
 
-## 🎯 Objectives & Scope
+## Objectives & Scope
 
 ### Objectives
 
@@ -163,7 +163,7 @@ The `dim_date` table supports the ticket's opened and resolved dates through rol
 
 ---
 
-## 🔎 SQL Business Analysis
+## SQL Business Analysis
 
 SQL is used to analyze the PostgreSQL data warehouse and answer **18 defined business questions (BQ-01 to BQ-18)**.
 
@@ -189,7 +189,7 @@ The SQL analysis provides the analytical basis for the Power BI dashboard and bu
 
 ---
 
-## 📊 Power BI Dashboard
+## Power BI Dashboard
 
 **Power BI connects directly to the PostgreSQL data warehouse** as the dashboard's primary data source.
 
@@ -215,7 +215,7 @@ This architecture allows the dashboard to use the structured warehouse tables ra
 
 ---
 
-## 📈 Key Metrics
+## Key Metrics
 
 ### Ticket Demand
 
@@ -253,7 +253,7 @@ This architecture allows the dashboard to use the structured warehouse tables ra
 
 ---
 
-## 💡 Business Insights
+## Business Insights
 
 The analysis identified several notable patterns:
 
@@ -271,7 +271,7 @@ These are observed patterns in the dataset. The available data does not contain 
 
 ---
 
-## 💼 Business Recommendations
+## Business Recommendations
 
 1. **Investigate workload allocation for Technical and Integrations**
    Technical has the largest ticket volume and backlog, while Integrations has the longest response and resolution times.
@@ -290,7 +290,7 @@ These are observed patterns in the dataset. The available data does not contain 
 
 ---
 
-## ⚠️ Data Limitations
+##  Data Limitations
 
 * CSAT coverage is **30.65%**, so CSAT findings are directional.
 * Agent-level and staffing data are unavailable.
@@ -300,7 +300,7 @@ These are observed patterns in the dataset. The available data does not contain 
 
 ---
 
-## 🧰 Technology Stack
+##  Technology Stack
 
 | Category                | Technology                 |
 | ----------------------- | -------------------------- |
@@ -338,7 +338,7 @@ Recommendations
 
 ---
 
-## 📄 Project Context
+##  Project Context
 
 This project was developed as a **Business Intelligence / Data Analytics portfolio project** using historical customer support ticket data.
 
@@ -350,6 +350,6 @@ The objective is to transform raw operational ticket data into structured, decis
 
 ---
 
-## 📜 License
+##  License
 
 This project is intended for portfolio and educational purposes.
